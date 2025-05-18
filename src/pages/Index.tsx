@@ -1,15 +1,34 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AuthForm from "../components/auth/AuthForm";
 import HeroSection from "../components/auth/HeroSection";
 import { AnimatePresence, motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect to dashboard if user is already authenticated
+  useEffect(() => {
+    if (user && !loading) {
+      navigate('/dashboard');
+    }
+  }, [user, loading, navigate]);
 
   const toggleAuthMode = () => {
     setAuthMode(authMode === "login" ? "signup" : "login");
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row w-full overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50">

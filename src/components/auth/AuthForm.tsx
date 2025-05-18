@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, User, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface AuthFormProps {
   authMode: "login" | "signup";
@@ -13,24 +13,30 @@ interface AuthFormProps {
 
 const AuthForm = ({ authMode, onToggleMode }: AuthFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const { signIn, signUp, loading } = useAuth();
+  const [formError, setFormError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setFormError("");
 
-    // Simulating API call
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success(
-        authMode === "login" 
-          ? "Successfully logged in!" 
-          : "Account created successfully!"
-      );
-    }, 1500);
+    try {
+      if (authMode === "login") {
+        await signIn(email, password);
+      } else {
+        if (!name.trim()) {
+          setFormError("Name is required");
+          return;
+        }
+        await signUp(email, password, name);
+      }
+    } catch (error: any) {
+      console.error("Authentication error:", error);
+      setFormError(error.message || "An unexpected error occurred");
+    }
   };
 
   const formVariants = {
@@ -130,12 +136,18 @@ const AuthForm = ({ authMode, onToggleMode }: AuthFormProps) => {
             </div>
           )}
           
+          {formError && (
+            <div className="text-red-500 text-sm font-medium p-2 bg-red-50 rounded">
+              {formError}
+            </div>
+          )}
+          
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={loading}
             className="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-2 rounded-md transition-all duration-300 shadow-md hover:shadow-lg"
           >
-            {isLoading ? (
+            {loading ? (
               <div className="flex items-center justify-center">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                 <span>{authMode === "login" ? "Logging in..." : "Creating account..."}</span>
