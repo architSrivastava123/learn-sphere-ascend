@@ -52,7 +52,7 @@ const AuthForm = ({ authMode, onToggleMode }: AuthFormProps) => {
       variants={formVariants}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <div className="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+      <div className="bg-white p-8 rounded-2xl shadow-lg border border-slate-200">
         <h2 className="text-2xl font-bold mb-6 text-slate-800">
           {authMode === "login" ? "Welcome back" : "Create account"}
         </h2>
@@ -137,7 +137,7 @@ const AuthForm = ({ authMode, onToggleMode }: AuthFormProps) => {
           )}
           
           {formError && (
-            <div className="text-red-500 text-sm font-medium p-3 bg-red-50 rounded-md border border-red-100">
+            <div className="text-red-500 text-sm font-medium p-2 bg-red-50 rounded">
               {formError}
             </div>
           )}
@@ -145,12 +145,12 @@ const AuthForm = ({ authMode, onToggleMode }: AuthFormProps) => {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-md transition-all duration-300"
+            className="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-2 rounded-md transition-all duration-300 shadow-md hover:shadow-lg"
           >
             {loading ? (
               <div className="flex items-center justify-center">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                <span>{authMode === "login" ? "Signing in..." : "Creating account..."}</span>
+                <span>{authMode === "login" ? "Logging in..." : "Creating account..."}</span>
               </div>
             ) : (
               <span>{authMode === "login" ? "Sign In" : "Create My Study Plan"}</span>

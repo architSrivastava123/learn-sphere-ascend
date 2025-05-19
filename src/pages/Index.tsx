@@ -24,14 +24,14 @@ const Index = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-indigo-50 to-purple-50">
+      <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row w-full overflow-hidden bg-gradient-to-br from-indigo-50 to-purple-50">
+    <div className="min-h-screen flex flex-col md:flex-row w-full overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
